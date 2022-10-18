@@ -1,8 +1,8 @@
 // =================================================================
 //
 // File: main.cpp
-// Author:
-// Date:
+// Author: José Diego Llaca Castro
+// Date: 18/10/2022
 //
 // =================================================================
 #include <iostream>
@@ -64,16 +64,62 @@ int main(int argc, char* argv[]){
 	//Se aplica algoritmo de ordenamiento selectionSort
 	selectionSort(barcos);
 
-	//Despliega en archivo y guarda los datos en formato y orden que encajen con el prefijo.
-	for (int i = 0; i < n; i++){
-		if (barcos[i].iub.substr(0, 3) == prefix){
-			outputFile << setfill('0');
-			outputFile << setw(2) << barcos[i].dia << "-";
-			outputFile << setw(2) << barcos[i].mes << "-";
-			outputFile << setw(2) << barcos[i].yr << " ";
-			outputFile << setw(2) << barcos[i].hr << ":";
-			outputFile << setw(2) << barcos[i].min << " ";
-			outputFile << barcos[i].entrada << " " << barcos[i].iub << endl;
+	string meses[12]={"jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"};
+	int acum_med = 0;
+	int acum_red = 0;
+	int boat_num = 0;
+	int med_count = 0;
+	int mednums[12]={};
+	int red_count = 0; 
+	int rednums[12]={};
+
+	vector<string> med;
+	vector<string> red;
+
+	for(int i = 1; i <= 12; i++){
+		med_count = 0;
+		red_count = 0;
+		if(boat_num > barcos.size()){
+			break;
+		}
+		while (barcos[boat_num].mes == i){
+			if (barcos[boat_num].iub.substr(0, 3) == prefix)
+				if (barcos[boat_num].entrada == 'M'){
+					med.push_back(barcos[boat_num].iub);
+					med_count++;
+				}
+				else {
+					red.push_back(barcos[boat_num].iub);
+					red_count++;
+				}
+				boat_num++;
+		}
+		mednums[i-1]=med_count;
+		rednums[i-1]=red_count;
+	}
+
+	for (int i = 0; i < 12; i++){
+		if (mednums[i] == 0 && rednums[i] == 0){
+			continue;
+		}
+		else {
+			outputFile << meses[i] << endl;
+			if (mednums[i] != 0){
+				outputFile << "M " << mednums[i] << ": ";
+				for (int j = 0; j < mednums[i] ; j++){
+					outputFile << med[acum_med] << " ";
+					acum_med = acum_med + 1;
+					outputFile << endl;
+				}
+			}
+			if (rednums[i] != 0){
+				outputFile << "R " << rednums[i] << ": ";
+				for (int j = 0; j < rednums[i] ; j++){
+					outputFile << red[acum_red] << " ";
+					acum_red = acum_red + 1;
+				}
+				outputFile << endl;
+			}
 		}
 	}
 
