@@ -109,8 +109,8 @@ int main(int argc, char* argv[]){
 				for (int j = 0; j < mednums[i] ; j++){
 					outputFile << med[acum_med] << " ";
 					acum_med = acum_med + 1;
-					outputFile << endl;
 				}
+				outputFile << endl;
 			}
 			if (rednums[i] != 0){
 				outputFile << "R " << rednums[i] << ": ";
